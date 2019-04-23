@@ -862,17 +862,28 @@ restamp:
 			return 1;
 		}
 		if (timing) {
-			if (triptime >= 100000)
-				printf(_(" time=%ld ms"), (triptime + 500) / 1000);
-			else if (triptime >= 10000)
-				printf(_(" time=%ld.%01ld ms"), (triptime + 50) / 1000,
-				       ((triptime + 50) % 1000) / 100);
-			else if (triptime >= 1000)
-				printf(_(" time=%ld.%02ld ms"), (triptime + 5) / 1000,
-				       ((triptime + 5) % 1000) / 10);
-			else
-				printf(_(" time=%ld.%03ld ms"), triptime / 1000,
-				       triptime % 1000);
+			printf(_(" time=%f ms"), triptime / 1000.0);
+
+			struct timeval curtime;
+			double d;
+
+			gettimeofday (&curtime, NULL);
+			d = ((double) curtime.tv_usec) / 1000000. + (unsigned long) curtime.tv_sec;
+
+			printf(_(" %f"), d - triptime / 1000000.0);
+
+
+			// if (triptime >= 100000)
+			// 	printf(_(" time=%ld ms"), (triptime + 500) / 1000);
+			// else if (triptime >= 10000)
+			// 	printf(_(" time=%ld.%01ld ms"), (triptime + 50) / 1000,
+			// 	       ((triptime + 50) % 1000) / 100);
+			// else if (triptime >= 1000)
+			// 	printf(_(" time=%ld.%02ld ms"), (triptime + 5) / 1000,
+			// 	       ((triptime + 5) % 1000) / 10);
+			// else
+			// 	printf(_(" time=%ld.%03ld ms"), triptime / 1000,
+			// 	       triptime % 1000);
 		}
 		if (dupflag)
 			printf(_(" (DUP!)"));
